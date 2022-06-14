@@ -36,6 +36,7 @@ test:
     - {{ PYTHON }} -c "import ijson; assert ijson.backend == 'yajl2_c'"
   requires:
     - pip
+    - python
 
 about:
   home: https://github.com/ICRAR/ijson
