@@ -12,35 +12,44 @@ source:
   sha256: {{ sha256sum }}
 
 build:
-  noarch: python
-  number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  number: 1
+  script: 
+    - {{ PYTHON }} -m pip install . --no-deps -vvv
+  # Remove it when yajl backend will work on windows 
+  missing_dso_whitelist:
+    - $RPATH/yajl.dll  # [win]
 
 requirements:
+  build:
+    - {{ compiler('c') }}
   host:
     - pip
     - python
     - setuptools
-
+    - wheel
+    - yajl
   run:
     - python
+    - yajl
 
 test:
   imports:
     - ijson
     - ijson.backends
-  commands:
-    - pip check
   requires:
     - pip
+  commands:
+    - pip check
+    - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
 
 about:
-  home: https://github.com/isagalaev/ijson
-  license: BSD 3-clause
+  home: https://github.com/ICRAR/ijson
+  license: BSD-3-Clause
+  license_family: BSD
   license_file: LICENSE.txt
   summary: Ijson is an iterative JSON parser with a standard Python iterator interface.
-  doc_url: https://github.com/isagalaev/ijson
-  dev_url: https://github.com/isagalaev/ijson
+  doc_url: https://github.com/ICRAR/ijson
+  dev_url: https://github.com/ICRAR/ijson
 
 extra:
   recipe-maintainers:
