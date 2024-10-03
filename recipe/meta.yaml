@@ -1,21 +1,18 @@
 {% set name = "ijson" %}
-{% set version = "3.1.4" %}
-{% set sha256sum = "1d1003ae3c6115ec9b587d29dd136860a81a23c7626b682e2b5b12c9fd30e4ea" %}
+{% set version = "3.3.0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256sum }}
+  sha256: 7f172e6ba1bee0d4c8f8ebd639577bfe429dee0f3f96775a067b8bae4492d8a0
 
 build:
-  number: 1
-  script: 
-    - {{ PYTHON }} -m pip install . --no-deps -vvv
-  # Remove it when yajl backend will work on windows 
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  # Remove it when yajl backend will work on windows
   missing_dso_whitelist:
     - $RPATH/yajl.dll  # [win]
 
