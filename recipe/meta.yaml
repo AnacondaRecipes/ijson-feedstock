@@ -10,7 +10,7 @@ source:
   sha256: 7f172e6ba1bee0d4c8f8ebd639577bfe429dee0f3f96775a067b8bae4492d8a0
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   # Remove it when yajl backend will work on windows
   missing_dso_whitelist:
