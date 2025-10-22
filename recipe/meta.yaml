@@ -1,47 +1,54 @@
 {% set name = "ijson" %}
-{% set version = "3.3.0" %}
+{% set version = "3.4.0.post0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 7f172e6ba1bee0d4c8f8ebd639577bfe429dee0f3f96775a067b8bae4492d8a0
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 9aa02dc70bb245670a6ca7fba737b992aeeb4895360980622f7e568dbf23e41e
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   # Remove it when yajl backend will work on windows
   missing_dso_whitelist:
     - $RPATH/yajl.dll  # [win]
+  skip: true  # [py<39]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
   host:
     - pip
     - python
-    - setuptools
-    - wheel
-    - yajl 2.1.0
+    - setuptools >=77.0
+    - yajl 2.1.0 # [not win]
   run:
     - python
-    - yajl >=2.1.0,<3.0.0
+    - yajl >=2.1.0,<3.0.0 # [not win]
 
 test:
   imports:
     - ijson
     - ijson.backends
+    - ijson.common
+    - ijson.utils
   requires:
     - pip
+    - pytest
+  source_files:
+    - tests/
   commands:
     - pip check
     - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
+    - pytest -v tests/
 
 about:
   home: https://github.com/ICRAR/ijson
-  license: BSD-3-Clause
+  license: BSD-3-Clause AND ISC
   license_family: BSD
   license_file: LICENSE.txt
   summary: Ijson is an iterative JSON parser with a standard Python iterator interface.
