@@ -19,6 +19,7 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
   host:
     - pip
@@ -35,13 +36,19 @@ test:
     - ijson.backends
   requires:
     - pip
+    - pytest
+  source_files:
+    - tests/
   commands:
     - pip check
     - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
+    - pytest -v tests/ # [not win]
+    # Skip yajl tests until yajl backend will work on windows
+    - pytest -v tests/ -k "not (test_yajl2_c_loadable or test_ijson_yajl2_backend_can_be_loaded)" # [win]
 
 about:
   home: https://github.com/ICRAR/ijson
-  license: BSD-3-Clause
+  license: BSD-3-Clause AND ISC
   license_family: BSD
   license_file: LICENSE.txt
   summary: Ijson is an iterative JSON parser with a standard Python iterator interface.
