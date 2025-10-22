@@ -25,15 +25,17 @@ requirements:
     - pip
     - python
     - setuptools >=77.0
-    - yajl 2.1.0
+    - yajl 2.1.0 # [not win]
   run:
     - python
-    - yajl >=2.1.0,<3.0.0
+    - yajl >=2.1.0,<3.0.0 # [not win]
 
 test:
   imports:
     - ijson
     - ijson.backends
+    - ijson.common
+    - ijson.utils
   requires:
     - pip
     - pytest
@@ -42,9 +44,7 @@ test:
   commands:
     - pip check
     - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
-    - pytest -v tests/ # [not win]
-    # Skip yajl tests until yajl backend will work on windows
-    - pytest -v tests/ -k "not (test_yajl2_c_loadable or test_ijson_yajl2_backend_can_be_loaded)" # [win]
+    - pytest -v tests/
 
 about:
   home: https://github.com/ICRAR/ijson
