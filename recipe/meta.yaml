@@ -32,7 +32,7 @@ requirements:
 # E                      (right here) ------^
 {% set deselect_tests = " --deselect=tests/test_basic_parse.py::test_multiple_values" %}  # [win]
 
-test
+test:
   imports:
     - ijson
     - ijson.backends
