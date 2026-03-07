@@ -27,10 +27,11 @@ requirements:
     - python
     - yajl >=2.1.0,<3.0.0
 
+{% set deselect_tests = "" %}
 # E ijson.common.IncompleteJSONError: parse error: trailing garbage
 # E                "meta": []     }   ] }  {   "docs": [     {       "null
 # E                      (right here) ------^
-{% set deselect_tests = " --deselect=tests/test_basic_parse.py::test_multiple_values" %}  # [win]
+{% set deselect_tests = deselect_tests + "--deselect=tests/test_basic_parse.py::test_multiple_values" %}  # [win]
 
 test:
   imports:
