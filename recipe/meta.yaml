@@ -12,9 +12,6 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  # Remove it when yajl backend will work on windows
-  missing_dso_whitelist:
-    - $RPATH/yajl.dll  # [win]
   skip: true  # [py<39]
 
 requirements:
@@ -25,10 +22,10 @@ requirements:
     - pip
     - python
     - setuptools >=77.0
-    - yajl 2.1.0  # [not win]
+    - yajl 2.1.0
   run:
     - python
-    - yajl >=2.1.0,<3.0.0  # [not win]
+    - yajl >=2.1.0,<3.0.0
 
 test:
   imports:
@@ -43,7 +40,7 @@ test:
     - tests/
   commands:
     - pip check
-    - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
+    - python -c "import ijson; assert ijson.backend == 'yajl2_c'"
     - pytest -v tests/
 
 about:
