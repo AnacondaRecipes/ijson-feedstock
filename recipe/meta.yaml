@@ -1,13 +1,19 @@
 {% set name = "ijson" %}
-{% set version = "3.5.0" %}
+{% set version = "3.5.1" %}
+{% set deselect_tests = "--deselect=tests/test_basic_parse.py::test_multiple_values" %}
+{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_items.py::test_multiple_values"' %}
 
+# Flaky test
+# E ijson.common.IncompleteJSONError: parse error: trailing garbage
+# E                "meta": []     }   ] }  {   "docs": [     {       "null
+# E                      (right here) ------^
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 94688760720e3f5212731b3cb8d30267f9a045fb38fb3870254e7b9504246f31
+  sha256: af40bd1a85f55db0b8b30715c858761306bd92d5590148636f75c3309e6e76bd
 
 build:
   number: 0
@@ -29,13 +35,6 @@ requirements:
   run:
     - python
     - yajl >=2.1.0,<3.0.0  # [not win]
-
-# Flaky test
-# E ijson.common.IncompleteJSONError: parse error: trailing garbage
-# E                "meta": []     }   ] }  {   "docs": [     {       "null
-# E                      (right here) ------^
-{% set deselect_tests = "--deselect=tests/test_basic_parse.py::test_multiple_values" %}
-{% set deselect_tests = deselect_tests + " --deselect=tests/test_items.py::test_multiple_values" %}
 
 test:
   imports:
