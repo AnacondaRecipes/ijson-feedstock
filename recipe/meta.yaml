@@ -13,9 +13,6 @@ build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   skip: true  # [py<39]
-  # Remove it when yajl backend will work on windows
-  # missing_dso_whitelist:
-  #   - $RPATH/yajl.dll  # [win]
 
 requirements:
   build:
@@ -28,7 +25,6 @@ requirements:
     - yajl 2.1.0  # [not win]
   run:
     - python
-    - yajl >=2.1.0,<3.0.0  # [not win]
 
 # Flaky test
 # E ijson.common.IncompleteJSONError: parse error: trailing garbage
@@ -46,6 +42,8 @@ requirements:
 {% set ignored_tests = ignored_tests + " and not yajl2-sendable" %}
 
 test:
+  source_files:
+    - tests
   imports:
     - ijson
     - ijson.backends
@@ -54,8 +52,7 @@ test:
   requires:
     - pip
     - pytest
-  source_files:
-    - tests
+    - yajl >=2.1.0,<3.0.0  # [not win]
   commands:
     - pip check
     - python -c "import ijson; assert ijson.backend == 'yajl2_c'"  # [not win]
