@@ -25,6 +25,7 @@ requirements:
     - yajl 2.1.0  # [not win]
   run:
     - python
+    - yajl >=2.1.0,<3.0.0  # [not win]
 
 # Flaky test
 # E ijson.common.IncompleteJSONError: parse error: trailing garbage
